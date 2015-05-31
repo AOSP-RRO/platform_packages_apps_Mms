@@ -753,13 +753,18 @@ public class MessagingPreferenceActivity extends PreferenceActivity
                     final String scAddress = sm.getSmscAddressFromIcc();
                     Log.d(TAG, "get SMSC from sub= " + phoneId + " scAddress= " + scAddress);
                     if (scAddress == null) return ;
-                    final String displaySmsc = scAddress.substring(1, scAddress.lastIndexOf("\""));
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            Log.d(TAG, "update SMSC= " + displaySmsc + " phoneId = " +phoneId);
-                            mSmscPrefList.get(phoneId).setSummary(displaySmsc);
-                        }
-                    });
+
+                    try {
+                        final String displaySmsc = scAddress.substring(1, scAddress.lastIndexOf("\""));
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Log.d(TAG, "update SMSC= " + displaySmsc + " phoneId = " +phoneId);
+                                mSmscPrefList.get(phoneId).setSummary(displaySmsc);
+                            }
+                        });
+                    } catch(Exception ex) {
+                        // do nothing
+                    }
                 }
             }).start();
         } else {
